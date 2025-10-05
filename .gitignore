@@ -29,6 +29,7 @@
 *.dylib
 
 # Executables
+ft_ssl
 *.exe
 *.out
 *.app
