@@ -1,6 +1,8 @@
 #include <unistd.h>
 #include <stdio.h>
 
+#include "get_next_line/get_next_line.h"
+
 #define FLAG_P (1 << 0)
 #define FLAG_Q (1 << 1)
 #define FLAG_R (1 << 2)
