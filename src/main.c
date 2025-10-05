@@ -1,4 +1,4 @@
-#include "header.h"
+#include "ft_ssl.h"
 
 char *verify_args(int ac, char **av, int *flags) {
 	char *res = "/dev/stdin";
@@ -37,6 +37,7 @@ int	main(int ac, char **av) {
 	char	*file_name	= verify_args(ac, av, &flags);
 	if (!file_name) {
 		ft_error("\nCommands:\nmd5\nsha256\n\nFlags:\n-p -q -r -s\n");
+		return (1);
 	}
 	printf("%d and %s", flags, file_name);
 	return (0);

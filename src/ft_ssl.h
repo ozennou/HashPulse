@@ -8,3 +8,4 @@
 
 int ft_error(char*);
 int ft_strcmp(char*, char*);
+void print_binary(unsigned char *data, size_t len);
