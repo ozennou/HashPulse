@@ -1,7 +1,8 @@
 #include <unistd.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-#include "get_next_line/get_next_line.h"
+#define CHUNK_SIZE 8192
 
 #define FLAG_P (1 << 0)
 #define FLAG_Q (1 << 1)
@@ -10,4 +11,8 @@
 
 int ft_error(char*);
 int ft_strcmp(char*, char*);
+char	*ft_strjoin(char const *a, char const *b);
+size_t	ft_strlen(const char *s);
+
+//ril
 void print_binary(unsigned char *data, size_t len);
