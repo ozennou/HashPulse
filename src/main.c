@@ -36,7 +36,7 @@ int verify_args(int ac, char **av, t_options *options) {
 	return 0;
 }
 
-int load_and_process(t_options *options) {
+int load(t_options *options) {
 	char	buffer[CHUNK_SIZE];
 	ssize_t	bytes_read;
 
@@ -54,8 +54,83 @@ int load_and_process(t_options *options) {
 		while ((bytes_read = read(0, buffer, CHUNK_SIZE)) > 0) {
 			write(options->tmp_fd, buffer, bytes_read);
 		}
+		if (lseek(options->tmp_fd, 0, SEEK_SET) == -1 || unlink(templates) == -1) {
+			ft_error("ft_ssl: Error: Unable to reset temporary file pointer.\n");
+			close(options->tmp_fd);
+			unlink(templates);
+			return 1;
+		}
+	}
+	return 0;
+}
 
-		unlink(templates);
+void md5_init(t_hash_ctx *ctx) {
+	ctx->datalen = 0;
+	ctx->bitlen = 0;
+	ctx->state[0] = 0x67452301;
+	ctx->state[1] = 0xefcdab89;
+	ctx->state[2] = 0x98badcfe;
+	ctx->state[3] = 0x10325476;
+}
+
+void testfunc(unsigned char *content) {
+	for (int i = 0; i < 64; i++){
+		printf("%c", content[i]);
+	}
+	printf("\n---------------------------------------\n");
+}
+
+void md5_update(t_hash_ctx *ctx, unsigned char *buffer, int len) {
+	int	i;
+
+	printf("%d\n", len);
+
+	for (i = 0; len - i > 64; i += 64){
+		testfunc(buffer + i);
+	}
+	printf("seed: %d\n", len - i);
+}
+
+int md5_digest(int fd) {
+	t_hash_ctx		ctx;
+	ssize_t			bytes_read;
+	unsigned char	*buffer;
+
+	buffer = malloc(MAX_SIZE);
+	md5_init(&ctx);
+	while ((bytes_read = read(fd, buffer, MAX_SIZE)) > 0) {
+		md5_update(&ctx, buffer, bytes_read);
+	}
+	if (bytes_read < 0) {
+		ft_error("ft_ssl: Error: Unable to read input data.\n");
+		free(buffer);
+		return 1;
+	}
+
+	free(buffer);
+	return 0;
+}
+
+int process(t_options *options) {
+	ssize_t	bytes_read;
+	off_t	tmp_size;
+
+	if (options->hash == 1) {
+		if (options->flags & FLAG_P) {
+			md5_digest(options->tmp_fd);
+			close(options->tmp_fd);
+		}
+		for (int i = 0; options->inputs[i] != NULL; i++) {
+			int fd = open(options->inputs[i], O_RDONLY);
+			if (fd == -1) {
+				ft_error("ft_ssl: Error: Unable to open file '");
+				ft_error(options->inputs[i]);
+				ft_error("'.\n");
+				return 1;
+			}
+			md5_digest(fd);
+			close(fd);
+		}	
 	}
 	return 0;
 }
@@ -72,13 +147,16 @@ int	main(int ac, char **av) {
 		return (1);
 	}
 
-	if (load_and_process(&options)) {
+	if (load(&options)) {
 		free(options.inputs);
 		return (1);
 	}
 
-
-
+	if (process(&options)) {
+		free(options.inputs);
+		close(options.tmp_fd);
+		return (1);
+	}
 
 	//////// Debug: print parsed options
 	printf("Hash: %s\n", options.hash == 1 ? "md5" : "sha256");
