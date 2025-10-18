@@ -33,3 +33,22 @@ char	*ft_strjoin(char const *a, char const *b)
 	res[a_ln + i] = '\0';
 	return (res);
 }
+
+void	*ft_memcpy(void *d, const void *s, size_t n)
+{
+	size_t			i;
+	unsigned char	*p;
+	unsigned char	*pp;
+
+	if (!s && !d)
+		return (NULL);
+	i = 0;
+	p = (unsigned char *)d;
+	pp = (unsigned char *)s;
+	while (i < n)
+	{
+		p[i] = pp[i];
+		i++;
+	}
+	return (d);
+}

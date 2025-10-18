@@ -26,10 +26,11 @@ typedef struct s_hash_ctx {
     unsigned long   bitlen;
 } t_hash_ctx;
 
-int     ft_error(char*);
-int     ft_strcmp(char*, char*);
+void	*ft_memcpy(void *d, const void *s, size_t n);
 char	*ft_strjoin(char const *a, char const *b);
 size_t	ft_strlen(const char *s);
+int     ft_strcmp(char*, char*);
+int     ft_error(char*);
 
 //TODO
 void print_binary(unsigned char *data, size_t len);

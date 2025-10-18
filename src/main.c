@@ -73,22 +73,46 @@ void md5_init(t_hash_ctx *ctx) {
 	ctx->state[3] = 0x10325476;
 }
 
-void testfunc(unsigned char *content) {
+void testfunc(const unsigned char *content) { //TODO
 	for (int i = 0; i < 64; i++){
 		printf("%c", content[i]);
 	}
 	printf("\n---------------------------------------\n");
 }
 
-void md5_update(t_hash_ctx *ctx, unsigned char *buffer, int len) {
-	int	i;
+void md5_transform(t_hash_ctx *ctx, const unsigned char block[64]) {
+	(void)ctx;
+	(void)block;
+}
 
-	printf("%d\n", len);
+void md5_update(t_hash_ctx *ctx, const unsigned char *data, int len) {
+	size_t i = 0;
 
-	for (i = 0; len - i > 64; i += 64){
-		testfunc(buffer + i);
+	if (ctx->datalen) {
+		size_t to_copy = 64 - ctx->datalen;
+		if (to_copy > len) to_copy = len;
+		ft_memcpy(ctx->data + ctx->datalen, data, to_copy);
+		ctx->datalen += (unsigned int)to_copy;
+		i += to_copy;
+		if (ctx->datalen == 64) {
+			testfunc(ctx->data);
+			md5_transform(ctx, ctx->data);
+			ctx->bitlen += 512;
+			ctx->datalen = 0;
+		}
 	}
-	printf("seed: %d\n", len - i);
+
+	for (; i + 64 <= len; i += 64) {
+		testfunc(data + i);
+		md5_transform(ctx, data + i);
+		ctx->bitlen += 512;
+	}
+
+	if (i < len) {
+		size_t rem = len - i;
+		memcpy(ctx->data, data + i, rem);
+		ctx->datalen = (unsigned int)rem;
+	}
 }
 
 int md5_digest(int fd) {
@@ -97,6 +121,10 @@ int md5_digest(int fd) {
 	unsigned char	*buffer;
 
 	buffer = malloc(MAX_SIZE);
+	if (!buffer) {
+		ft_error("ft_ssl: Error: Memory allocation failed.\n");
+		exit(1);
+	}
 	md5_init(&ctx);
 	while ((bytes_read = read(fd, buffer, MAX_SIZE)) > 0) {
 		md5_update(&ctx, buffer, bytes_read);
