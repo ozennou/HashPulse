@@ -2,7 +2,7 @@ NAME = ft_ssl
 
 OBJS = $(shell find . -name '*.c' | sed 's/\.c/\.o/g' | tr '\n' ' ')
 
-CC = cc #-Wall -Wextra -Werror
+CC = cc -fsanitize=address #-Wall -Wextra -Werror
 
 HEADERS = $(shell find . -name '*.h' | tr '\n' ' ')
 

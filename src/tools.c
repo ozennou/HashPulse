@@ -18,7 +18,7 @@ int ft_strcmp(char *s1, char *s2)
 	return (*(unsigned char *)s1 - *(unsigned char *)s2);
 }
 
-void print_binary(unsigned char *data, size_t len) // remove later: RIL
+void print_binary(unsigned char *data, size_t len) // remove later: TODO
 {
 	printf("Binary representation (%zu bytes):\n", len);
 	for (size_t i = 0; i < len; i++)
