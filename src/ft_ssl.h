@@ -26,6 +26,11 @@ typedef struct s_hash_ctx {
     unsigned long   bitlen;
 } t_hash_ctx;
 
+void    md5_init(t_hash_ctx *ctx);
+void    md5_transform(t_hash_ctx *ctx, const unsigned char block[64]);
+void    md5_update(t_hash_ctx *ctx, const unsigned char *data, int len);
+int     md5_digest(int fd);
+
 void	*ft_memcpy(void *d, const void *s, size_t n);
 char	*ft_strjoin(char const *a, char const *b);
 size_t	ft_strlen(const char *s);
