@@ -36,6 +36,8 @@ char	*ft_strjoin(char const *a, char const *b);
 size_t	ft_strlen(const char *s);
 int     ft_strcmp(char*, char*);
 int     ft_error(char*);
+void    print_usage(void);
+void    print_help(void);
 
 //TODO
 void print_binary(unsigned char *data, size_t len);

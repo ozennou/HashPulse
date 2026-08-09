@@ -94,13 +94,13 @@ int process(t_options *options) {
 
 int	main(int ac, char **av) {
 	if (ac < 2) {
-		ft_error("usage: ft_ssl command [flags] [file/string]\n");
+		print_usage();
 		return (1);
 	}
 
 	t_options options = {0, 0, -1, NULL};
 	if (verify_args(ac, av, &options)) {
-		ft_error("\nCommands:\nmd5\nsha256\n\nFlags:\n-p -q -r -s\n");
+		print_help();
 		return (1);
 	}
 
