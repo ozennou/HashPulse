@@ -2,8 +2,7 @@ NAME = ft_ssl
 
 OBJS = $(shell find . -name '*.c' | sed 's/\.c/\.o/g' | tr '\n' ' ')
 
-CC = cc -fsanitize=address #-Wall -Wextra -Werror
-
+CC = cc -Wall -Wextra -Werror #-fsanitize=address 
 HEADERS = $(shell find . -name '*.h' | tr '\n' ' ')
 
 %.o: %.c Makefile $(HEADERS)
