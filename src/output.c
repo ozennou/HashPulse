@@ -9,11 +9,11 @@ void	ft_putstr(const char *s)
 void	put_hex(const unsigned char *digest, size_t len)
 {
 	const char	*hex = "0123456789abcdef";
-	char		out[64];
+	char		out[128];
 	size_t		i;
 
 	i = 0;
-	while (i < len && i < 32)
+	while (i < len && i < MAX_DIGEST)
 	{
 		out[i * 2] = hex[digest[i] >> 4];
 		out[i * 2 + 1] = hex[digest[i] & 15];

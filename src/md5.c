@@ -104,7 +104,7 @@ void md5_transform(t_hash_ctx *ctx, const unsigned char *block) {
 void md5_final(t_hash_ctx *ctx, unsigned char *digest) {
 	unsigned int	i;
 
-	hash_pad(ctx);
+	hash_pad(ctx, STD_LENFIELD);
 	for (i = 0; i < 8; i++)
 		ctx->data[56 + i] = (unsigned char)(ctx->bitlen >> (8 * i));
 	ctx->transform(ctx, ctx->data);
