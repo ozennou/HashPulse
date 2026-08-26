@@ -14,11 +14,6 @@ static int invalid_flag(t_options *options, char *flag) {
 	return 1;
 }
 
-/*
-** Flags are only recognised until the first operand appears; after that
-** everything is a file name, even something starting with '-'. That is why
-** the subject's example treats the second "-s" as a missing file (p.9).
-*/
 static int parse_operands(int ac, char **av, t_options *options) {
 	int	i = 2;
 	int	flags_done = 0;
@@ -33,7 +28,6 @@ static int parse_operands(int ac, char **av, t_options *options) {
 				options->flags |= FLAG_R;
 			else if (!ft_strcmp(av[i], "-s")) {
 				options->flags |= FLAG_S;
-				/* -s consumes the next argument as a literal string */
 				if (i + 1 < ac)
 					add_input(options, INPUT_STRING, av[++i]);
 				else
@@ -67,7 +61,6 @@ int verify_args(int ac, char **av, t_options *options) {
 	return parse_operands(ac, av, options);
 }
 
-/* Read a whole descriptor into memory. Needed for -p, which has to echo it. */
 unsigned char *read_all(int fd, size_t *out_len) {
 	unsigned char	*buf;
 	unsigned char	*bigger;
@@ -100,7 +93,6 @@ unsigned char *read_all(int fd, size_t *out_len) {
 	return buf;
 }
 
-/* stdin is consumed when -p is given, or when there is nothing else to hash. */
 static int process_stdin(t_options *options, unsigned char *digest) {
 	unsigned char	*content;
 	size_t			len;

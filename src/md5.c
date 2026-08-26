@@ -10,8 +10,6 @@ void md5_init(t_hash_ctx *ctx) {
 	ctx->state[3] = 0x10325476;
 }
 
-// K[i] = floor(2^32 * abs(sin(i + 1))), i in radians.
-// Precomputed so no math library is needed.
 static const unsigned int	g_k[64] = {
 	0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
 	0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
@@ -31,7 +29,6 @@ static const unsigned int	g_k[64] = {
 	0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391
 };
 
-/* Per-round left-rotation amounts, four repeating patterns of four. */
 static const unsigned int	g_s[64] = {
 	7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,
 	5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20,
@@ -55,7 +52,6 @@ static unsigned int	md5_i(unsigned int b, unsigned int c, unsigned int d) {
 	return (c ^ (b | ~d));
 }
 
-/* Which of the 16 message words each round consumes. */
 static unsigned int	md5_idx_f(int i) {
 	return ((unsigned int)i);
 }
@@ -78,7 +74,6 @@ static unsigned int	(*const g_ops[4])(unsigned int, unsigned int,
 static unsigned int	(*const g_idx[4])(int) = {md5_idx_f, md5_idx_g,
 		md5_idx_h, md5_idx_i};
 
-// All arithmetic is mod 2^32, which unsigned overflow gives us for free.
 void md5_transform(t_hash_ctx *ctx, const unsigned char *block) {
 	unsigned int	m[16];
 	unsigned int	v[4];
@@ -106,10 +101,6 @@ void md5_transform(t_hash_ctx *ctx, const unsigned char *block) {
 		ctx->state[i] += v[i];
 }
 
-/*
-** Same padding as SHA-256 (hash_pad), but the length field and the digest
-** are both little-endian. That byte order is the only difference here.
-*/
 void md5_final(t_hash_ctx *ctx, unsigned char *digest) {
 	unsigned int	i;
 
@@ -117,7 +108,6 @@ void md5_final(t_hash_ctx *ctx, unsigned char *digest) {
 	for (i = 0; i < 8; i++)
 		ctx->data[56 + i] = (unsigned char)(ctx->bitlen >> (8 * i));
 	ctx->transform(ctx, ctx->data);
-	/* Serialize the state little-endian, same convention as the decode. */
 	for (i = 0; i < MD5_SIZE; i++)
 		digest[i] = (unsigned char)(ctx->state[i / 4] >> (8 * (i % 4)));
 }

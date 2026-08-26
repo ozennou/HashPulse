@@ -22,10 +22,6 @@ void	put_hex(const unsigned char *digest, size_t len)
 	write(1, out, i * 2);
 }
 
-/*
-** A string operand is shown inside quotes, a file operand bare. Everything
-** else about the two forms is identical, so the quoting is the only branch.
-*/
 static void	put_name(t_input *in)
 {
 	if (in->type == INPUT_STRING)
@@ -35,11 +31,6 @@ static void	put_name(t_input *in)
 		ft_putstr("\"");
 }
 
-/*
-** -q  ->  <digest>
-** -r  ->  <digest> name
-** ..  ->  MD5 (name) = <digest>
-*/
 void	print_result(t_options *o, t_input *in,
 		const unsigned char *digest)
 {
@@ -65,7 +56,6 @@ void	print_result(t_options *o, t_input *in,
 	ft_putstr("\n");
 }
 
-/* stdin without -p. There is no name to reverse, so -r changes nothing. */
 void	print_stdin(t_options *o, const unsigned char *digest)
 {
 	if (!(o->flags & FLAG_Q))
@@ -74,12 +64,6 @@ void	print_stdin(t_options *o, const unsigned char *digest)
 	ft_putstr("\n");
 }
 
-/*
-** stdin with -p: echo what was read, then the checksum. Quiet mode echoes
-** the bytes verbatim; otherwise they are quoted on one line, which means
-** dropping the trailing newline the shell almost always adds.
-** -r does not affect this form (see the subject, p.9).
-*/
 void	print_stdin_echo(t_options *o, const unsigned char *content,
 		size_t len, const unsigned char *digest)
 {
@@ -101,7 +85,6 @@ void	print_stdin_echo(t_options *o, const unsigned char *content,
 	ft_putstr("\n");
 }
 
-/* ft_ssl: md5: name: No such file or directory */
 void	print_file_error(t_options *o, const char *name)
 {
 	ft_error("ft_ssl: ");

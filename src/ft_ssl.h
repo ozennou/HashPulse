@@ -5,7 +5,7 @@
 #include <errno.h>
 
 #define CHUNK_SIZE 8192
-#define MAX_SIZE (1024 * 1024) // 1 MB
+#define MAX_SIZE (1024 * 1024)
 
 #define ROTL32(x, n) (((x) << (n)) | ((x) >> (32 - (n))))
 #define ROTR32(x, n) (((x) >> (n)) | ((x) << (32 - (n))))
@@ -24,16 +24,11 @@ typedef enum e_input_type {
     INPUT_STRING
 }   t_input_type;
 
-/* One operand, in the order it appeared on the command line. */
 typedef struct s_input {
     t_input_type    type;
     char            *value;
 }   t_input;
 
-/*
-** The block buffering in hash_update is identical for both algorithms, so
-** the context carries its own compression function and update stays generic.
-*/
 typedef struct s_hash_ctx {
     unsigned char   data[64];
     unsigned int    datalen;
@@ -42,11 +37,10 @@ typedef struct s_hash_ctx {
     void            (*transform)(struct s_hash_ctx *, const unsigned char *);
 } t_hash_ctx;
 
-/* One row per algorithm; adding a hash means adding a row, not a branch. */
 typedef struct s_command {
-    char    *name;                              /* "md5"  */
-    char    *label;                             /* "MD5"  */
-    size_t  size;                               /* digest length in bytes */
+    char    *name;
+    char    *label;
+    size_t  size;
     void    (*init)(t_hash_ctx *);
     void    (*final)(t_hash_ctx *, unsigned char *);
 }   t_command;
@@ -58,7 +52,6 @@ typedef struct s_options {
     int             count;
 }   t_options;
 
-/* hash.c */
 void            hash_update(t_hash_ctx *ctx, const unsigned char *data,
                     size_t len);
 void            hash_pad(t_hash_ctx *ctx);
@@ -67,12 +60,10 @@ int             digest_fd(const t_command *cmd, int fd, unsigned char *digest);
 void            digest_buf(const t_command *cmd, const unsigned char *data,
                     size_t len, unsigned char *digest);
 
-/* md5.c */
 void    md5_init(t_hash_ctx *ctx);
 void    md5_transform(t_hash_ctx *ctx, const unsigned char *block);
 void    md5_final(t_hash_ctx *ctx, unsigned char *digest);
 
-/* sha256.c */
 void    sha256_init(t_hash_ctx *ctx);
 void    sha256_transform(t_hash_ctx *ctx, const unsigned char *block);
 void    sha256_final(t_hash_ctx *ctx, unsigned char *digest);
@@ -85,7 +76,6 @@ int     ft_error(char*);
 void    print_usage(void);
 void    print_help(void);
 
-/* output.c */
 void    ft_putstr(const char *s);
 void    put_hex(const unsigned char *digest, size_t len);
 void    print_result(t_options *o, t_input *in, const unsigned char *digest);
