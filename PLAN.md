@@ -1,3 +1,0 @@
-File ---> read 1MB ---> md5_update() ---> internal 64-byte blocks
-... repeat until EOF ...
-Last chunk ---> md5_finalize() ---> add padding + length
