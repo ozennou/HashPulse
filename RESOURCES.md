@@ -25,6 +25,10 @@ Reference material used while building `ft_ssl`, plus the diagrams written for t
 
 ## Bonus — Whirlpool
 
+- [Whirlpool hashing function — seminar paper](https://web.archive.org/web/20240428145421/https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=eae4ca3441b83c14e17c6866d0214b623195bdfd)
+  A 19-page walkthrough of the block cipher W and its four round layers (SB, SC, MR, AK),
+  written as a university seminar paper. Not the official specification: it does not cover
+  the Miyaguchi-Preneel wrapper, the S-box mini-box construction or the test vectors.
 - [Inside Whirlpool](https://claude.ai/code/artifact/8e303142-7c59-439e-a45d-cd2280544d1b)
   Why a block cipher can be used as a hash (Miyaguchi–Preneel), the 8×8 byte state, the
   AES-like round, and the 256-bit length field that moves the padding boundary.
