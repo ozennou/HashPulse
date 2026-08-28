@@ -1,10 +1,24 @@
 #include "ft_ssl.h"
 
+void	ft_write(int fd, const void *buf, size_t len)
+{
+	const char	*p = buf;
+	ssize_t		n;
+
+	while (len > 0)
+	{
+		n = write(fd, p, len);
+		if (n <= 0)
+			return ;
+		p += n;
+		len -= (size_t)n;
+	}
+}
+
 int	ft_error(char *str)
 {
 	if (str)
-		while (*str)
-			write(2, str++, 1);
+		ft_write(2, str, ft_strlen(str));
 	return (1);
 }
 

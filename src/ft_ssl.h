@@ -81,6 +81,7 @@ char	*ft_strjoin(char const *a, char const *b);
 size_t	ft_strlen(const char *s);
 int     ft_strcmp(char*, char*);
 int     ft_error(char*);
+void    ft_write(int fd, const void *buf, size_t len);
 void    print_usage(void);
 void    print_help(void);
 

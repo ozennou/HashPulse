@@ -3,7 +3,7 @@
 void	ft_putstr(const char *s)
 {
 	if (s)
-		write(1, s, ft_strlen(s));
+		ft_write(1, s, ft_strlen(s));
 }
 
 void	put_hex(const unsigned char *digest, size_t len)
@@ -19,7 +19,7 @@ void	put_hex(const unsigned char *digest, size_t len)
 		out[i * 2 + 1] = hex[digest[i] & 15];
 		i++;
 	}
-	write(1, out, i * 2);
+	ft_write(1, out, i * 2);
 }
 
 static void	put_name(t_input *in)
@@ -69,7 +69,7 @@ void	print_stdin_echo(t_options *o, const unsigned char *content,
 {
 	if (o->flags & FLAG_Q)
 	{
-		write(1, content, len);
+		ft_write(1, content, len);
 		if (len == 0 || content[len - 1] != '\n')
 			ft_putstr("\n");
 		put_hex(digest, o->cmd->size);
@@ -79,7 +79,7 @@ void	print_stdin_echo(t_options *o, const unsigned char *content,
 	ft_putstr("(\"");
 	if (len && content[len - 1] == '\n')
 		len--;
-	write(1, content, len);
+	ft_write(1, content, len);
 	ft_putstr("\")= ");
 	put_hex(digest, o->cmd->size);
 	ft_putstr("\n");
