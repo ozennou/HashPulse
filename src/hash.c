@@ -1,11 +1,31 @@
 #include "ft_ssl.h"
 
 static const t_command	g_commands[] = {
-	{"md5", "MD5", MD5_SIZE, md5_init, md5_final},
-	{"sha256", "SHA256", SHA256_SIZE, sha256_init, sha256_final},
-	{"sha512", "SHA512", SHA512_SIZE, sha512_init, sha512_final},
-	{NULL, NULL, 0, NULL, NULL}
+	{"md5", "MD5", "compute an MD5 message digest",
+		MD5_SIZE, md5_init, md5_final},
+	{"sha256", "SHA256", "compute a SHA-256 message digest",
+		SHA256_SIZE, sha256_init, sha256_final},
+	{"sha512", "SHA512", "compute a SHA-512 message digest",
+		SHA512_SIZE, sha512_init, sha512_final},
+	{NULL, NULL, NULL, 0, NULL, NULL}
 };
+
+void print_commands(void) {
+	static const char	*pad = "            ";
+	int					i = 0;
+	int					n;
+
+	while (g_commands[i].name) {
+		ft_error("  ");
+		ft_error(g_commands[i].name);
+		n = 12 - (int)ft_strlen(g_commands[i].name);
+		if (n > 0)
+			ft_write(2, pad, (size_t)n);
+		ft_error(g_commands[i].desc);
+		ft_error("\n");
+		i++;
+	}
+}
 
 const t_command	*find_command(const char *name) {
 	int	i = 0;

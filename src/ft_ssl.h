@@ -48,6 +48,7 @@ typedef struct s_hash_ctx {
 typedef struct s_command {
     char    *name;
     char    *label;
+    char    *desc;
     size_t  size;
     void    (*init)(t_hash_ctx *);
     void    (*final)(t_hash_ctx *, unsigned char *);
@@ -64,6 +65,7 @@ void            hash_update(t_hash_ctx *ctx, const unsigned char *data,
                     size_t len);
 void            hash_pad(t_hash_ctx *ctx, size_t lenfield);
 const t_command *find_command(const char *name);
+void            print_commands(void);
 int             digest_fd(const t_command *cmd, int fd, unsigned char *digest);
 void            digest_buf(const t_command *cmd, const unsigned char *data,
                     size_t len, unsigned char *digest);
