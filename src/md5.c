@@ -2,6 +2,7 @@
 
 void md5_init(t_hash_ctx *ctx) {
 	ctx->datalen = 0;
+	ctx->blocksize = 64;
 	ctx->bitlen = 0;
 	ctx->transform = md5_transform;
 	ctx->state[0] = 0x67452301;

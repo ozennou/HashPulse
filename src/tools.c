@@ -32,6 +32,7 @@ void	print_help(void)
 	ft_error("\nCommands:\n");
 	ft_error("  md5         compute an MD5 message digest\n");
 	ft_error("  sha256      compute a SHA-256 message digest\n");
+	ft_error("  sha512      compute a SHA-512 message digest\n");
 	ft_error("\nFlags:\n");
 	ft_error("  -p          echo STDIN to STDOUT and append the checksum\n");
 	ft_error("  -q          quiet mode: print only the digest\n");

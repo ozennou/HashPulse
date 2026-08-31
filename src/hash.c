@@ -3,6 +3,7 @@
 static const t_command	g_commands[] = {
 	{"md5", "MD5", MD5_SIZE, md5_init, md5_final},
 	{"sha256", "SHA256", SHA256_SIZE, sha256_init, sha256_final},
+	{"sha512", "SHA512", SHA512_SIZE, sha512_init, sha512_final},
 	{NULL, NULL, 0, NULL, NULL}
 };
 
@@ -19,21 +20,22 @@ const t_command	*find_command(const char *name) {
 
 void hash_update(t_hash_ctx *ctx, const unsigned char *data, size_t len) {
 	size_t i = 0;
+	size_t bs = ctx->blocksize;
 	if (ctx->datalen) {
-		size_t to_copy = 64 - ctx->datalen;
+		size_t to_copy = bs - ctx->datalen;
 		if (to_copy > len) to_copy = len;
 		ft_memcpy(ctx->data + ctx->datalen, data, to_copy);
 		ctx->datalen += (unsigned int)to_copy;
 		i += to_copy;
-		if (ctx->datalen == 64) {
+		if (ctx->datalen == bs) {
 			ctx->transform(ctx, ctx->data);
-			ctx->bitlen += 512;
+			ctx->bitlen += bs * 8;
 			ctx->datalen = 0;
 		}
 	}
-	for (; i + 64 <= len; i += 64) {
+	for (; i + bs <= len; i += bs) {
 		ctx->transform(ctx, data + i);
-		ctx->bitlen += 512;
+		ctx->bitlen += bs * 8;
 	}
 	if (i < len) {
 		size_t rem = len - i;
@@ -44,17 +46,18 @@ void hash_update(t_hash_ctx *ctx, const unsigned char *data, size_t len) {
 
 void hash_pad(t_hash_ctx *ctx, size_t lenfield) {
 	unsigned int	i;
-	unsigned int	limit = 64 - (unsigned int)lenfield;
+	unsigned int	bs = ctx->blocksize;
+	unsigned int	limit = bs - (unsigned int)lenfield;
 	ctx->bitlen += (unsigned long)ctx->datalen * 8;
 	i = ctx->datalen;
 	ctx->data[i++] = 0x80;
 	if (i > limit) {
-		while (i < 64)
+		while (i < bs)
 			ctx->data[i++] = 0x00;
 		ctx->transform(ctx, ctx->data);
 		i = 0;
 	}
-	while (i < 64)
+	while (i < bs)
 		ctx->data[i++] = 0x00;
 }
 

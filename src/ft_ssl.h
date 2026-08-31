@@ -9,6 +9,7 @@
 
 #define ROTL32(x, n) (((x) << (n)) | ((x) >> (32 - (n))))
 #define ROTR32(x, n) (((x) >> (n)) | ((x) << (32 - (n))))
+#define ROTR64(x, n) (((x) >> (n)) | ((x) << (64 - (n))))
 
 #define FLAG_P (1 << 0)
 #define FLAG_Q (1 << 1)
@@ -17,9 +18,12 @@
 
 #define MD5_SIZE 16
 #define SHA256_SIZE 32
-#define MAX_DIGEST 32
+#define SHA512_SIZE 64
+#define MAX_DIGEST 64
+#define MAX_BLOCK 128
 
 #define STD_LENFIELD 8
+#define SHA512_LENFIELD 16
 
 typedef enum e_input_type {
     INPUT_FILE,
@@ -32,9 +36,11 @@ typedef struct s_input {
 }   t_input;
 
 typedef struct s_hash_ctx {
-    unsigned char   data[64];
+    unsigned char   data[MAX_BLOCK];
     unsigned int    datalen;
+    unsigned int    blocksize;
     unsigned int    state[8];
+    unsigned long long  state64[8];
     unsigned long   bitlen;
     void            (*transform)(struct s_hash_ctx *, const unsigned char *);
 } t_hash_ctx;
@@ -69,6 +75,10 @@ void    md5_final(t_hash_ctx *ctx, unsigned char *digest);
 void    sha256_init(t_hash_ctx *ctx);
 void    sha256_transform(t_hash_ctx *ctx, const unsigned char *block);
 void    sha256_final(t_hash_ctx *ctx, unsigned char *digest);
+
+void    sha512_init(t_hash_ctx *ctx);
+void    sha512_transform(t_hash_ctx *ctx, const unsigned char *block);
+void    sha512_final(t_hash_ctx *ctx, unsigned char *digest);
 
 void	*ft_memcpy(void *d, const void *s, size_t n);
 char	*ft_strjoin(char const *a, char const *b);
