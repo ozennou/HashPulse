@@ -3,7 +3,6 @@
 static const t_command	g_commands[] = {
 	{"md5", "MD5", MD5_SIZE, md5_init, md5_final},
 	{"sha256", "SHA256", SHA256_SIZE, sha256_init, sha256_final},
-	{"whirlpool", "WHIRLPOOL", WHIRLPOOL_SIZE, whirlpool_init, whirlpool_final},
 	{NULL, NULL, 0, NULL, NULL}
 };
 

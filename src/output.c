@@ -9,7 +9,7 @@ void	ft_putstr(const char *s)
 void	put_hex(const unsigned char *digest, size_t len)
 {
 	const char	*hex = "0123456789abcdef";
-	char		out[128];
+	char		out[64];
 	size_t		i;
 
 	i = 0;

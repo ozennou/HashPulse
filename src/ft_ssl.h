@@ -17,11 +17,9 @@
 
 #define MD5_SIZE 16
 #define SHA256_SIZE 32
-#define WHIRLPOOL_SIZE 64
-#define MAX_DIGEST 64
+#define MAX_DIGEST 32
 
 #define STD_LENFIELD 8
-#define WHIRLPOOL_LENFIELD 32
 
 typedef enum e_input_type {
     INPUT_FILE,
@@ -37,7 +35,6 @@ typedef struct s_hash_ctx {
     unsigned char   data[64];
     unsigned int    datalen;
     unsigned int    state[8];
-    unsigned long long  state64[8];
     unsigned long   bitlen;
     void            (*transform)(struct s_hash_ctx *, const unsigned char *);
 } t_hash_ctx;
@@ -72,9 +69,6 @@ void    md5_final(t_hash_ctx *ctx, unsigned char *digest);
 void    sha256_init(t_hash_ctx *ctx);
 void    sha256_transform(t_hash_ctx *ctx, const unsigned char *block);
 void    sha256_final(t_hash_ctx *ctx, unsigned char *digest);
-void    whirlpool_init(t_hash_ctx *ctx);
-void    whirlpool_transform(t_hash_ctx *ctx, const unsigned char *block);
-void    whirlpool_final(t_hash_ctx *ctx, unsigned char *digest);
 
 void	*ft_memcpy(void *d, const void *s, size_t n);
 char	*ft_strjoin(char const *a, char const *b);
