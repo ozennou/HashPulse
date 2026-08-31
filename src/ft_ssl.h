@@ -86,6 +86,9 @@ size_t	ft_strlen(const char *s);
 int     ft_strcmp(char*, char*);
 int     ft_error(char*);
 void    ft_write(int fd, const void *buf, size_t len);
+int     verify_args(int ac, char **av, t_options *options);
+int     process(t_options *options);
+int     repl(void);
 void    print_usage(void);
 void    print_help(void);
 

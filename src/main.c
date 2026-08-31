@@ -153,10 +153,8 @@ int	main(int ac, char **av) {
 	t_options	options = {NULL, 0, NULL, 0};
 	int			status;
 
-	if (ac < 2) {
-		print_usage();
-		return (1);
-	}
+	if (ac < 2)
+		return (repl());
 	if (verify_args(ac, av, &options)) {
 		print_help();
 		return (1);
