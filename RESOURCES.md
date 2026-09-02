@@ -11,24 +11,29 @@ Reference material used while building `ft_ssl`, plus the diagrams written for t
   Stage-by-stage walkthrough: the chaining construction, the little-endian byte decode, the
   round shuffle and the 55/56 padding boundary, with a worked `MD5("abc")` trace.
 
-## SHA-256
+## SHA-256 and SHA-512
 
 - [FIPS 180-4 — Secure Hash Standard](https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf)
-  The specification for the whole SHA-2 family. Defines the round constants, the sigma
-  functions and the padding, and carries the test vectors used to validate this
-  implementation.
+  The specification for the whole SHA-2 family, so it covers both algorithms here: SHA-256
+  in section 6.2, SHA-512 in section 6.4. Defines the round constants, the sigma functions
+  and the padding, and carries the test vectors used to validate both implementations.
 - [SHA-256 in JavaScript](https://www.movable-type.co.uk/scripts/sha256.html)
   A readable step-by-step implementation. Handy for checking intermediate values by hand.
 - [Inside SHA-256](https://claude.ai/code/artifact/e0c4f1e8-dabd-4568-8d33-4577840d3b38)
   The message schedule that expands 16 words into 64, the two registers updated per round,
-  the sigma functions, and where the constants come from.
+  the sigma functions, and where the constants come from. SHA-512 is the same structure
+  widened to 64-bit words, 80 rounds and a 128-bit length field.
 
-## Bonus — Whirlpool
+## Bonus
 
-- [Whirlpool hashing function — seminar paper](https://web.archive.org/web/20240428145421/https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=eae4ca3441b83c14e17c6866d0214b623195bdfd)
-  A 19-page walkthrough of the block cipher W and its four round layers (SB, SC, MR, AK),
-  written as a university seminar paper. Not the official specification: it does not cover
-  the Miyaguchi-Preneel wrapper, the S-box mini-box construction or the test vectors.
-- [Inside Whirlpool](https://claude.ai/code/artifact/8e303142-7c59-439e-a45d-cd2280544d1b)
-  Why a block cipher can be used as a hash (Miyaguchi–Preneel), the 8×8 byte state, the
-  AES-like round, and the 256-bit length field that moves the padding boundary.
+The bonus is two things: reading commands from standard input, and an extra hash function
+stronger than MD5. SHA-512 covers the second, and is specified in FIPS 180-4 above.
+
+- [GNU Readline](https://tiswww.case.edu/php/chet/readline/rltop.html)
+  Drives the interactive prompt when standard input is a terminal. The subject permits it
+  for the bonus part only.
+
+---
+
+Whirlpool was implemented and then removed from the project. Its notes and diagram remain
+in the history at commits `4902ab7` and `0aa59ca`.
